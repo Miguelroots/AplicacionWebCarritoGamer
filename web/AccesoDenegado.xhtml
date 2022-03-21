@@ -1,0 +1,46 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui">
+    <h:head>
+        <h:outputStylesheet library="css" name="bootstrap.min.css"/>
+        <h:outputScript library="js" name="bootstrap.bundle.min.js"/>
+        <title>Facelet Title</title>
+    </h:head>
+    <h:body class="bg-danger">
+        <h:form>
+            <h:panelGroup class="position-absolute top-50 start-50 translate-middle w-50">
+                <p:graphicImage  class="d-block mx-auto w-50" library="icons" name="bx-error.svg" style="filter: invert(1)"/>
+                
+                <h:panelGroup class="d-block mb-3">
+                    <h:outputLabel class="d-block text-center text-white fs-1" value="Acceso Denegado"/>
+                
+                    <h:outputLabel class="d-block text-center text-white fs-3" value="Su acceso a esta dirección puede 
+                                   deberse a alguno de los siguientes puntos"/>
+                </h:panelGroup>
+                
+                <p:panel class="bg-transparent" header="No realizo su proceso de inicio de sesión" 
+                         toggleable="true" collapsed="true">
+                    <h:outputLabel class="d-block text-white" value="Posiblemente no inicio sesión en el sitio web, 
+                                   lo que ocasiono que usted no pueda acceder a la dirección escrita."/>
+                </p:panel>
+                
+                <p:panel class="bg-transparent" header="Intenta ingresar a una sección fuera de alcance" 
+                         toggleable="true" collapsed="true">
+                    <h:outputLabel class="d-block text-white" value="Posiblemente esta intentando ingresar a una
+                                   parte de la aplicación que no esta dentro de su alcance de uso."/>
+                </p:panel>
+                
+                <h:commandButton class="btn btn-warning w-100 mt-3" action="/Usuario" value="Regresar"/>
+            </h:panelGroup>
+            
+            <!--<h:outputLabel value="Acceso Denegado"/>
+            <h:commandButton action="/Usuario" value="Regresar"/>
+            <p:graphicImage library="icons" name="bx-error.svg" style="width: 20rem"/>-->
+        </h:form>
+        
+       
+    </h:body>
+</html>
+

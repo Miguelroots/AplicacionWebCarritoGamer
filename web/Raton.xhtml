@@ -1,0 +1,57 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                template="./templates/newTemplate.xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:define name="content">
+        <!--CONTENT-->
+        <h:panelGroup class="d-flex my-3">
+            <p:dataView class="w-100 mx-2" value="#{mbProducto.getLstProductoCategoria(4)}" var="product">
+                <p:dataViewListItem>
+                    <h:panelGroup class="d-flex align-items-center m-2">
+                        <h:graphicImage class="d-block" style="width: 12em" library="img" name="#{product.imagen}"/>
+                        <h:panelGroup class="ms-3 w-50">
+                            <h:panelGroup class="container-fluid"> 
+                                <h:panelGroup class="row row-cols-1 row-cols-md-2 mt-2 mt-md-0">
+                                    <h:panelGroup class="col-4 col-lg-3">
+                                        <h:outputLabel class="fw-bold" value="Nombre: "/>
+                                    </h:panelGroup>
+                                    <h:panelGroup class="col">
+                                        <h:outputText class="d-block" value="#{product.nombre}"/>
+                                    </h:panelGroup>
+                                </h:panelGroup>
+
+                                <h:panelGroup class="row row-cols-1 row-cols-md-2 mt-2 mt-md-0">
+                                    <h:panelGroup class="col-4 col-lg-3">
+                                        <h:outputLabel class="fw-bold" value="Decripción: "/>
+                                    </h:panelGroup>
+                                    <h:panelGroup class="col">
+                                        <h:outputText class="d-block" value="#{product.descripcion}"/>
+                                    </h:panelGroup>
+                                </h:panelGroup>
+
+                                <h:panelGroup class="row row-cols-1 row-cols-md-2 mt-2 mt-md-0">
+                                    <h:panelGroup class="col-4 col-lg-3">
+                                        <h:outputLabel class="fw-bold" value="Precio: "/>
+                                    </h:panelGroup>
+                                    <h:panelGroup class="col">
+                                        <h:outputText class="d-block" value="$#{product.precio}"/>
+                                    </h:panelGroup>
+                                </h:panelGroup>
+                            </h:panelGroup>
+                            <p:commandButton class="btn btn-outline-success w-100" id="btnAgregar" 
+                                     value="Agregar al Carrito" action="#{mbInicioSesion.puedeAgregarProducto()}" oncomplete="PF('dlgProducto').show()"
+                                     update="frmPP">
+                                <f:setPropertyActionListener target="#{mbCarrito.obj_Carrito.producto}" value="#{product}"/>
+                            </p:commandButton>
+                        </h:panelGroup>
+                    </h:panelGroup> 
+                </p:dataViewListItem>
+            </p:dataView>
+        </h:panelGroup>
+    </ui:define>
+
+</ui:composition>

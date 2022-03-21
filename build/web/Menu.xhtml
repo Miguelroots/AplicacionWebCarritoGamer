@@ -1,0 +1,52 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                template="./templates/newTemplate.xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:define name="title">
+        INICIO
+    </ui:define>
+    
+    <ui:define name="left">
+        <h:panelGroup class="d-block" style="width: 14rem">
+            <p:panel class="d-block" header="Videojuegos" toggleable="true">
+                <h:link class="nav-link" value="Dark Souls" outcome="/Videojuegos"/>
+                <h:link class="nav-link" value="Battlefield 2042" outcome="/Videojuegos"/>
+                <h:link class="nav-link" value="GTA V" outcome="/Videojuegos"/>
+                <h:link class="nav-link" value="FIFA 22" outcome="/Videojuegos"/>
+            </p:panel>
+            <p:panel class="d-block" header="Consolas" toggleable="true">
+                <h:link class="nav-link" value="PS4" outcome="/Consolas"/>
+                <h:link class="nav-link" value="PS5" outcome="/Consolas"/>
+                <h:link class="nav-link" value="Xbox Series X" outcome="/Consolas"/>
+                <h:link class="nav-link" value="Xbox Series S" outcome="/Consolas"/>
+            </p:panel>
+        </h:panelGroup>
+    </ui:define>
+    
+    <ui:define name="content">
+        <p:dataGrid class="container" id="dtConsultar" layout="grid" value="#{mbProducto.lstProducto}" 
+                    var="product"
+                    rows="12" columns="2"
+                    paginator="true" rowsPerPageTemplate="6,12,16">
+            <h:panelGroup class="border border-3 p-3 d-block h-100">
+                <h:graphicImage class="d-block mx-auto" style="height: 9em" library="img" name="#{product.imagen}"/>
+
+                <h:outputText class="d-block text-center my-3" value="#{product.nombre}"/>
+
+                <h:panelGroup class="d-block d-lg-flex justify-content-between">
+                    <h:outputText class="d-block text-center mb-2 mb-lg-0" value="$#{product.precio}"/>
+                    <p:commandButton class="btn btn-outline-success ms-lg-5 w-100" id="btnAgregar" 
+                                     value="Agregar al Carrito" action="#{mbInicioSesion.puedeAgregarProducto()}" 
+                                     oncomplete="PF('dlgProducto').show()" update="frmPP">
+                        <f:setPropertyActionListener target="#{mbCarrito.obj_Carrito.producto}" value="#{product}"/>
+                    </p:commandButton>
+                </h:panelGroup>
+            </h:panelGroup>
+        </p:dataGrid>
+    </ui:define>
+    
+</ui:composition>

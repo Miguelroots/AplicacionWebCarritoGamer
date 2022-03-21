@@ -1,0 +1,42 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 3 mar. 2022 17:58:58 by Hibernate Tools 4.3.1 -->
+<hibernate-mapping>
+    <class name="Modelo.Envio" table="envio" schema="public" optimistic-lock="version">
+        <id name="idEnvio" type="int">
+            <column name="id_envio" />
+            <generator class="assigned" />
+        </id>
+        <many-to-one name="usuario" class="Modelo.Usuario" fetch="select">
+            <column name="id_usuario" not-null="true" />
+        </many-to-one>
+        <property name="pais" type="string">
+            <column name="pais" not-null="true" />
+        </property>
+        <property name="nombre" type="string">
+            <column name="nombre" not-null="true" />
+        </property>
+        <property name="direccion" type="string">
+            <column name="direccion" not-null="true" />
+        </property>
+        <property name="ciudad" type="string">
+            <column name="ciudad" not-null="true" />
+        </property>
+        <property name="provincia" type="string">
+            <column name="provincia" not-null="true" />
+        </property>
+        <property name="codigoPostal" type="string">
+            <column name="codigo_postal" not-null="true" />
+        </property>
+        <property name="telefono" type="int">
+            <column name="telefono" not-null="true" />
+        </property>
+        <set name="ordens" table="orden" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="id_envio" not-null="true" />
+            </key>
+            <one-to-many class="Modelo.Orden" />
+        </set>
+    </class>
+</hibernate-mapping>

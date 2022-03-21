@@ -1,0 +1,149 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                template="./templates/MantenedorTemplate.xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:define name="title">
+        REGISTROS DE VENTAS
+    </ui:define>
+
+    <ui:define name="tituloRegistro">
+        Registro de Ventas
+    </ui:define>
+
+    <ui:define name="registro">
+<!--        <p:panelGrid id="pgInsertar" columns="3">
+            <p:outputLabel value="Id_Venta" />
+            <p:inputText class="form-control" id="txt_id_Venta" value="#{mbVentas.obj_Ventas.idOrden}" required="true"/>
+            <p:message for="txt_id_Venta"/>
+
+            <p:outputLabel value="Id_Usuario" />
+            <p:inputText class="form-control" id="txt_id_Usuario" value="#{mbVentas.obj_Ventas.usuario.idUsuario}" required="true"/>
+            <p:message for="txt_id_Usuario"/>
+
+            <p:outputLabel value="Id_MetodoPago" />
+            <p:inputText class="form-control" id="txt_id_MetodoPago" value="#{mbVentas.obj_Ventas.metodoPago.idMetodoPago}" required="true"/>
+            <p:message for="txt_id_MetodoPago"/>            
+
+            <p:outputLabel value="Id_Envio" />
+            <p:inputText class="form-control" id="txt_id_Envio" value="#{mbVentas.obj_Ventas.envio.idEnvio}" required="true"/>
+            <p:message for="txt_id_Envio"/>
+
+            <p:outputLabel value="Total"/>
+            <p:inputText class="form-control" id="txtTotal"  value="#{mbVentas.obj_Ventas.total}"  required="true">
+                <f:validateDoubleRange minimum="10.50" maximum="5000.90"/>
+                <f:convertNumber minFractionDigits="2" maxFractionDigits="2"/>
+            </p:inputText>
+            <p:message for="txtTotal"/>
+
+            <p:commandButton icon="ui-icon-plusthick" value="Ingresar" 
+                             actionListener="#{mbVentas.agregarVentas()}" 
+                             update=":frmRegistro :frmConsultar"/>
+
+        </p:panelGrid>  -->
+    </ui:define>
+
+    <ui:define name="tabla">
+        <p:dataTable id="dtConsulta" value="#{mbVentas.lstVentas}" var="ven" rows="5"
+                     filteredValue="#{mbVentas.lstVentasFiltradas}" paginator="true" widgetVar="dtConsultar"
+                     paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                     currentPageReportTemplate="{startRecord}-{endRecord} de {totalRecords} registros"
+                     rowsPerPageTemplate="5,10,{ShowAll|'All'}">
+            <p:column headerText="Id_Venta" sortBy="#{ven.idOrden}" filterBy="#{ven.idOrden}">
+                <h:outputText value="#{ven.idOrden} "/>
+            </p:column>
+
+            <p:column headerText="Usuario" sortBy="#{ven.usuario.nickname}" filterBy="#{ven.usuario.nickname}">
+                <h:outputText value="#{ven.usuario.idUsuario}-#{ven.usuario.nombre}-#{ven.usuario.apellido}  "/>
+            </p:column>
+            
+            <p:column headerText="MetodoPago" sortBy="#{ven.metodoPago.descripcion}" 
+                      filterBy="#{ven.metodoPago.descripcion}">
+                <h:outputText value="#{ven.metodoPago.idMetodoPago} -- #{ven.metodoPago.descripcion}"/>
+            </p:column>
+            
+            <p:column headerText="Envio" sortBy="#{ven.envio.idEnvio}" filterBy="#{ven.envio.idEnvio}">
+                <h:outputText value="#{ven.envio.idEnvio}-#{ven.envio.ciudad}-#{ven.envio.direccion}"/>     
+            </p:column>
+            
+            <p:column headerText="Total" sortBy="#{ven.total}" filterBy="#{ven.total}">
+                <h:outputText value="$#{ven.total}"/>
+            </p:column>
+            
+            <p:column headerText="...">
+                <p:growl id="growl_m" showDetail="true"/>
+                <p:commandButton  value="Modificar"
+                                  oncomplete="PF('dlgModificar').show()"
+                                  update="frmModificar">
+                    <f:setPropertyActionListener target="#{mbVentas.obj_Ventas}" value="#{ven}"/>
+
+                </p:commandButton>
+            </p:column>
+            <p:column headerText="..">
+                <p:growl id="growl_e" showDetail="true"/>
+                <p:commandButton  value="Eliminar"
+                                  oncomplete="PF('dlgEliminar').show()"
+                                  update=":frmEliminar">
+                     <f:setPropertyActionListener target="#{mbVentas.obj_Ventas}" value="#{ven}"/>     
+                </p:commandButton>
+            </p:column>
+        </p:dataTable>
+    </ui:define>
+
+    <ui:define name="dlg">
+        <p:dialog id="dlgModificar" widgetVar="dlgModificar" 
+                  header="Modificar Ventas" showEffect="explode"  hideEffect="explode" minWidth="200" resizable="false"
+                  modal="true">
+            <h:form id="frmModificar">
+                <p:panelGrid id="pgInsertar" columns="3">
+                <p:outputLabel value="Id_Venta" />
+                <p:inputText class="form-control" id="txt_id_Venta" value="#{mbVentas.obj_Ventas.idOrden}" required="true"/>
+                <p:message for="txt_id_Venta"/>
+                
+                <p:outputLabel value="Id_Usuario" />
+                <p:inputText class="form-control" id="txt_id_Usuario" value="#{mbVentas.obj_Ventas.usuario.idUsuario}" required="true"/>
+                <p:message for="txt_id_Usuario"/>
+                
+                <p:outputLabel value="Id_MetodoPago" />
+                <p:inputText class="form-control" id="txt_id_MetodoPago" value="#{mbVentas.obj_Ventas.metodoPago.idMetodoPago}" required="true"/>
+                <p:message for="txt_id_MetodoPago"/>            
+                
+                <p:outputLabel value="Id_Envio" />
+                <p:inputText class="form-control" id="txt_id_Envio" value="#{mbVentas.obj_Ventas.envio.idEnvio}" required="true"/>
+                <p:message for="txt_id_Envio"/>
+                
+                <p:outputLabel value="Total"/>
+                <p:inputText class="form-control" id="txtTotal"  value="#{mbVentas.obj_Ventas.total}" required="true">
+                    <f:validateDoubleRange minimum="100.50" maximum="5000.90"/>
+                    <f:convertNumber minFractionDigits="2" maxFractionDigits="2"/>
+                </p:inputText>
+                <p:message for="txtTotal"/>
+                
+                <p:commandButton icon="ui-icon-refresh" value="Modificar" 
+                                 actionListener="#{mbVentas.modificarVentas()}"
+                                     update=":frmConsultar" 
+                                     oncomplete="PF('dlgModificar').hide() "/>
+                </p:panelGrid>  
+            </h:form>
+        </p:dialog>
+        <p:dialog id="dlgeliminar" widgetVar="dlgEliminar" header="Eliminar ventas"
+                  showEffect="explode" hideEffect="explode"
+                  modal="true" minWidth="200" resizable="false">
+            <h:form id="frmEliminar">         
+                <p:outputLabel value="Desea eliminar la venta con Id: #{mbVentas.obj_Ventas.idOrden}"/>
+                <p:commandButton icon="ui-icon-check" value="SI"
+                                 actionListener="#{mbVentas.eliminarVentas()}"
+                                 update=":frmConsultar" 
+                                 oncomplete="PF('dlgEliminar').hide()"/>
+                <p:commandButton icon="ui-icon-close" value="NO"
+                                 onclick="PF('dlgEliminar').hide()"/>
+                
+            </h:form>
+           
+        </p:dialog>       
+    </ui:define>
+
+</ui:composition>

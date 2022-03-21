@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 3 mar. 2022 17:58:58 by Hibernate Tools 4.3.1 -->
+<hibernate-mapping>
+    <class name="Modelo.Orden" table="orden" schema="public" optimistic-lock="version">
+        <id name="idOrden" type="int">
+            <column name="id_orden" />
+            <generator class="assigned" />
+        </id>
+        <many-to-one name="envio" class="Modelo.Envio" fetch="select">
+            <column name="id_envio" not-null="true" />
+        </many-to-one>
+        <many-to-one name="metodoPago" class="Modelo.MetodoPago" fetch="select">
+            <column name="id_metodo_pago" not-null="true" />
+        </many-to-one>
+        <many-to-one name="usuario" class="Modelo.Usuario" fetch="select">
+            <column name="id_usuario" not-null="true" />
+        </many-to-one>
+        <property name="total" type="big_decimal">
+            <column name="total" precision="131089" scale="0" not-null="true" />
+        </property>
+        <set name="detalleOrdens" table="detalle_orden" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="id_orden" not-null="true" />
+            </key>
+            <one-to-many class="Modelo.DetalleOrden" />
+        </set>
+    </class>
+</hibernate-mapping>

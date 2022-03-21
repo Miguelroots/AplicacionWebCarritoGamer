@@ -1,0 +1,90 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <h:head>
+        <title>Nuevo Usuario</title>
+        <h:outputStylesheet library="css" name="bootstrap.min.css"/>
+        <h:outputScript library="js" name="bootstrap.min.js"/>
+
+        <link href="resources/css/estilos2.css" rel="stylesheet" />
+    </h:head>
+    <h:body>
+        <h:form id="frmNuevoUsuario">
+            <h:panelGroup class="position-absolute top-50 start-50 translate-middle w-50 shadow py-5 bg-dark">
+                <p:outputLabel class="d-block text-center text-white fs-1 mb-5" value="Nuevo Usuario"/>
+                <h:panelGrid columnClasses="d-flex align-content-start" columns="2" class="mx-auto text-white">
+                    <p:outputLabel value="Nombres:" />
+                    <h:panelGrid class="mb-3">
+                        <p:inputText value="#{mbUsuario.obj_Usuario.nombre}" class="text" placeholder="Nombres" 
+                                 id="txtNombre" required="true"/>
+                        <p:message for="txtNombre"/>
+                    </h:panelGrid>
+                    
+                    <p:outputLabel value="Apellidos:"/>
+                    <h:panelGrid class="mb-3">
+                        <p:inputText value="#{mbUsuario.obj_Usuario.apellido}" class="text" placeholder="Apellidos" 
+                                 id="txtApellidos" required="true"/>
+                        <p:message for="txtApellidos"/>
+                    </h:panelGrid>
+
+                    <p:outputLabel value="Pais:" />
+                    <h:panelGrid class="mb-3">
+                        <h:selectOneMenu value="#{mbUsuario.obj_Usuario.pais}"
+                                         id="cboPais" required="true">
+                            <f:selectItem  itemLabel="Ecuador" itemValue="Ecuador"/>
+                            <f:selectItem  itemLabel="Colombia" itemValue="Colombia"/>
+                            <f:selectItem  itemLabel="Brasil" itemValue="Brasil"/>
+                        </h:selectOneMenu>
+                        <p:message for="cboPais"/>
+                    </h:panelGrid>
+                    
+                    <p:outputLabel value="Sexo:"/>
+                    <h:panelGrid class="mb-2">
+                        <p:selectOneRadio value="#{mbUsuario.obj_Usuario.sexo}" id="rdbSexo" required="true">
+                            <f:selectItem  itemLabel="Femenino" itemValue="Femenino"/>
+                            <f:selectItem  itemLabel="Masculino" itemValue="Masculino"/>    
+                        </p:selectOneRadio>
+                        <p:message for="rdbSexo"/>
+                    </h:panelGrid>
+                    
+                    <p:outputLabel class="me-3" value="Fecha de Nacimiento: "/>
+                    <h:panelGrid class="mb-3">
+                        <p:inputText value="#{mbUsuario.obj_Usuario.fechaNacimiento}" class="text" type="date"
+                                     placeholder="Fecha de nacimiento" id="txtFecha" label="Ingrese la Fecha" required="true">
+                            <f:convertDateTime pattern="yyyy-MM-dd"/>
+                        </p:inputText>
+                        <p:message for="txtFecha"/>
+                    </h:panelGrid>
+                    
+                    <p:outputLabel value="Email:"/>
+                    <h:panelGrid class="mb-3">
+                        <p:inputText class="text" placeholder="nickname@ejemplo.com" id="txtEmail" required="true" />
+                        <p:message for="txtEmail"/>
+                    </h:panelGrid>
+                    
+                    <p:outputLabel value="Nickname:"/>
+                    <h:panelGrid class="mb-3">
+                        <p:inputText value="#{mbUsuario.obj_Usuario.nickname}" class="text" 
+                                placeholder="Nickname" id="txtNickname" required="true"/>
+                        <p:message for="txtNickname"/>
+                    </h:panelGrid>
+                    
+                    <p:outputLabel value="Password:"/>
+                    <h:panelGrid class="mb-3">
+                        <p:password value="#{mbUsuario.obj_Usuario.contrasena}" class="text" 
+                                placeholder="Password" id="txtPassword" required="true"/>
+                        <p:message for="txtPassword"/>
+                    </h:panelGrid>
+                    
+                </h:panelGrid>
+                <p:commandButton type="submit" class="boton d-block mt-3 w-50 mx-auto" id="BtnCrearUsuario" value="CREAR USUARIO" 
+                                 onclick="#{mbUsuario.obtenerNuevoID()}" oncomplete="#{mbUsuario.agregarUsuario()}}">
+                </p:commandButton>
+            </h:panelGroup>
+        </h:form>  
+    </h:body>
+</html>
+

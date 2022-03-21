@@ -1,0 +1,237 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                template="./templates/MantenedorTemplate.xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:define name="title">
+        REGISTRO DE USUARIO
+    </ui:define>
+
+    <ui:define name="tituloRegistro">
+        Registro de Usuarios
+    </ui:define>
+
+    <ui:define name="registro">
+        <p:panelGrid id="pgInsertar" columns="3">
+            <p:outputLabel value="Id" />
+            <p:inputText class="form-control" id="txt_id" value="#{mbUsuario.obj_Usuario.idUsuario}" required="true"/>
+            <p:message for="txt_id"/>
+
+            <p:outputLabel value="Nombres"/>
+            <p:inputText class="form-control" id="txt_Nombres" value="#{mbUsuario.obj_Usuario.nombre}" required="true"/>
+            <p:message for="txt_Nombres"/>
+
+            <p:outputLabel value="Apellidos"/>
+            <p:inputText class="form-control" id="txt_Apellidos" value="#{mbUsuario.obj_Usuario.apellido}" required="true"/>
+            <p:message for="txt_Apellidos"/>
+
+            <p:outputLabel value="Pais"/>
+            <p:selectOneMenu id="cboPais" value="#{mbUsuario.obj_Usuario.pais}" required="true">
+                <f:selectItem itemLabel="Ecuador" itemValue="Ecuador"/>
+                <f:selectItem itemLabel="Colombia" itemValue="Colombia"/>
+                <f:selectItem itemLabel="Brasil" itemValue="Brasil"/>
+            </p:selectOneMenu>
+            <p:message for="cboPais"/>
+
+            <p:outputLabel value="Sexo"/>
+            <p:selectOneRadio id="rdbSexo" value="#{mbUsuario.obj_Usuario.sexo}" required="true">
+                <f:selectItem itemLabel="Masculino" itemValue="Masculino"/>
+                <f:selectItem itemLabel="Femenino" itemValue="Femenino"/>
+            </p:selectOneRadio>
+            <p:message for="rdbSexo"/>
+
+            <p:outputLabel value="Fecha de nacimiento"/>
+            <p:inputText class="form-control" id="txt_Fecha" value="#{mbUsuario.obj_Usuario.fechaNacimiento}" required="true">
+                <f:convertDateTime pattern="yyyy-MM-dd"/>
+            </p:inputText>
+            <p:message for="txt_Fecha"/>
+
+
+            <p:outputLabel value="Contraseña"/>
+            <p:inputText class="form-control" id="txt_Contraseña" value="#{mbUsuario.obj_Usuario.contrasena}" required="true"/>
+            <p:message for="txt_Contraseña"/>
+
+            <p:outputLabel value="Nickname"/>
+            <p:inputText class="form-control" id="txt_Nickname" value="#{mbUsuario.obj_Usuario.nickname}" required="true"/>
+            <p:message for="txt_Nickname"/>
+
+            <p:commandButton icon="ui-icon-plusthick" value="Ingresar" 
+                             actionListener="#{mbUsuario.agregarUsuario()}" 
+                             update=":frmRegistro :frmConsultar"/>
+
+        </p:panelGrid> 
+    </ui:define>
+
+    <ui:define name="tabla">
+        <p:dataTable id="dtConsulta" value="#{mbUsuario.lstUsuario}" var="Usu" rows="5" 
+                     filteredValue="#{mbUsuario.lstUsuariosFiltrados}" paginator="true" widgetVar="dtConsultar"
+                     paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                     currentPageReportTemplate="{startRecord}-{endRecord} de {totalRecords} registros"
+                     rowsPerPageTemplate="5,10,{ShowAll|'All'}">
+<!--            <f:facet name="paginatorTopLeft">
+                <p:inputText id="globalFilter" placeholder="Buscar..."/>
+                <p:commandButton class="btn-success" onclick="PF('dtConsultar').filter()" value="Buscar"/>
+            </f:facet>
+            -->
+            
+                                    
+            <f:facet name="header">
+                <p:outputPanel>
+                     <h:outputText value="Buscar:"/>
+                    <p:inputText id="globalFilter" onkeyup="PF('dtConsultar').filter()" placeholder="Buscar"/>       
+                </p:outputPanel>   
+            </f:facet>
+            
+            <p:column headerText="ID" sortBy="#{Usu.idUsuario}" filterBy="#{Usu.idUsuario}" filterMatchMode="exact">
+                <h:outputText value="#{Usu.idUsuario}"/>
+            </p:column>
+            
+            <p:column headerText="Nombre" sortBy="#{Usu.nombre}" filterBy="#{Usu.nombre}" filterMatchMode="contains"> 
+                <h:outputText value="#{Usu.nombre}"/>
+            </p:column> 
+            
+            <p:column headerText="Apellido" sortBy="#{Usu.apellido}" filterBy="#{Usu.apellido}" 
+                      filterMatchMode="contains">
+                <h:outputText value="#{Usu.apellido}"/>
+            </p:column> 
+            
+            <p:column headerText="Pais" sortBy="#{Usu.pais}" filterBy="#{Usu.pais}" filterMatchMode="exact">
+                <f:facet name="filter">
+                    <p:selectOneMenu onchange="PF('dtConsultar').filter()">
+                        <f:selectItem itemLabel="Todos"/>
+                        <f:selectItem itemLabel="Ecuador" itemValue="Ecuador"/>
+                        <f:selectItem itemLabel="Colombia" itemValue="Colombia"/>
+                        <f:selectItem itemLabel="Brasil" itemValue="Brasil"/>
+                    </p:selectOneMenu>
+                </f:facet>
+                <h:outputText value="#{Usu.pais}"/>
+            </p:column>
+            
+            <p:column headerText="Sexo" sortBy="#{Usu.sexo}" filterBy="#{Usu.sexo}" filterMatchMode="exact">
+                <f:facet name="filter">
+                    <p:selectOneRadio onchange="PF('dtConsultar').filter()">
+                        <f:selectItem itemLabel="Ambos"/>
+                        <f:selectItem itemLabel="Masculino" itemValue="Masculino"/>
+                        <f:selectItem itemLabel="Femenino" itemValue="Femenino"/>
+                    </p:selectOneRadio>
+                </f:facet>
+                <h:outputText value="#{Usu.sexo}"/>
+            </p:column>
+            
+            <p:column headerText="Fecha de Nacimiento" sortBy="#{Usu.fechaNacimiento}" 
+                      filterBy="#{Usu.fechaNacimiento}" filterMatchMode="exact">
+                <f:facet name="filter">
+                    <p:datePicker selectionMode="single" onchange="PF('dtConsultar').filter()" pattern="yyyy-MM-dd"/>
+                </f:facet>
+                
+                <h:outputText value="#{Usu.fechaNacimiento}">
+                    <f:convertDateTime pattern="yyyy-MM-dd"/>
+                </h:outputText>
+            </p:column>
+            
+            <p:column headerText="Contraseña" sortBy="#{Usu.contrasena}" filterBy="#{Usu.contrasena}" 
+                      filterMatchMode="exact">
+                <h:outputText value="#{Usu.contrasena}"/>
+            </p:column>
+            
+            <p:column headerText="Nickname" sortBy="#{Usu.nickname}" filterBy="#{Usu.nickname}" 
+                      filterMatchMode="contains">
+                <h:outputText value="#{Usu.nickname}"/>
+            </p:column>
+            
+            <p:column headerText="...">
+                <p:growl id="growl_m" showDetail="true"/>
+                <p:commandButton  value="Modificar"
+                                  oncomplete="PF('dlgModificar').show()"
+                                  update="frmModificar">
+                    <f:setPropertyActionListener target="#{mbUsuario.obj_Usuario}" value="#{Usu}"/>
+                </p:commandButton>
+            </p:column>
+            
+            <p:column headerText="...">
+                <p:growl id="growl_e" showDetail="true"/>
+                <p:commandButton  value="Eliminar"
+                                  oncomplete="PF('dlgEliminar').show()"
+                                  update=":frmEliminar">
+                     <f:setPropertyActionListener target="#{mbUsuario.obj_Usuario}" value="#{Usu}"/>     
+                </p:commandButton>
+            </p:column>
+        </p:dataTable>
+    </ui:define>
+
+    <ui:define name="dlg">
+        <p:dialog id="dlgModificar" widgetVar="dlgModificar" 
+                  header="Modificar Usuario" showEffect="explode"  hideEffect="explode" minWidth="200" resizable="false"
+                  modal="true">
+            <h:form id="frmModificar">
+                <p:panelGrid id="pgModificar" columns="3">
+                    <p:outputLabel value="Id" />
+                    <p:inputText id="txt_id" value="#{mbUsuario.obj_Usuario.idUsuario}" required="true"/>
+                    <p:message for="txt_id"/>
+
+                    <p:outputLabel value="Nombres"/>
+                    <p:inputText id="txt_Nombres" value="#{mbUsuario.obj_Usuario.nombre}" required="true"/>
+                    <p:message for="txt_Nombres"/>
+
+                    <p:outputLabel value="Apellidos"/>
+                    <p:inputText id="txt_Apellidos" value="#{mbUsuario.obj_Usuario.apellido}" required="true"/>
+                    <p:message for="txt_Apellidos"/>
+
+                    <p:outputLabel value="Pais"/>
+                    <p:selectOneMenu id="cboPais" value="#{mbUsuario.obj_Usuario.pais}" required="true">
+                        <f:selectItem itemLabel="Ecuador" itemValue="Ecuador"/>
+                        <f:selectItem itemLabel="Colombia" itemValue="Colombia"/>
+                        <f:selectItem itemLabel="Brasil" itemValue="Brasil"/>
+                    </p:selectOneMenu>
+                    <p:message for="cboPais"/>
+
+                    <p:outputLabel value="Sexo"/>
+                    <p:selectOneRadio id="rdbSexo" value="#{mbUsuario.obj_Usuario.sexo}" required="true">
+                        <f:selectItem itemLabel="Masculino" itemValue="Masculino"/>
+                        <f:selectItem itemLabel="Femenino" itemValue="Femenino"/>
+                    </p:selectOneRadio>
+                    <p:message for="rdbSexo"/>
+
+                    <p:outputLabel value="Fecha de nacimiento"/>
+                    <p:inputText id="txt_Fecha" value="#{mbUsuario.obj_Usuario.fechaNacimiento}" required="true">
+                        <f:convertDateTime pattern="yyyy-MM-dd"/>
+                    </p:inputText>
+                    <p:message for="txt_Fecha"/>
+                    
+                    <p:outputLabel value="Contraseña"/>
+                    <p:inputText id="txt_Contraseña" value="#{mbUsuario.obj_Usuario.contrasena}" required="true"/>
+                    <p:message for="txt_Contraseña"/>
+
+                    <p:outputLabel value="Nickname"/>
+                    <p:inputText id="txt_Nickname" value="#{mbUsuario.obj_Usuario.nickname}" required="true"/>
+                    <p:message for="txt_Nickname"/>
+                           
+                    <p:commandButton icon="ui-icon-check" value="Modificar" 
+                                     actionListener="#{mbUsuario.modificarUsuario()}"
+                                     update=":frmConsultar" 
+                                     oncomplete="PF('dlgModificar').hide() "/>
+                </p:panelGrid>  
+            </h:form>
+        </p:dialog>
+        
+        <p:dialog id="dlgeliminar" widgetVar="dlgEliminar" header="Eliminar Usuario"
+                  showEffect="explode" hideEffect="explode"
+                  modal="true" minWidth="200" resizable="false">
+            <h:form id="frmEliminar">         
+                <p:outputLabel value="Desea eliminar el Usuario con Id: #{mbUsuario.obj_Usuario.idUsuario}"/>
+                <p:commandButton icon="ui-icon-check" value="SI"
+                                 actionListener="#{mbUsuario.eliminarUsuario()}"
+                                 update=":frmConsultar" 
+                                 oncomplete="PF('dlgEliminar').hide()"/>
+                <p:commandButton icon="ui-icon-close" value="NO"
+                                 onclick="PF('dlgEliminar').hide()"/>
+                
+                
+            </h:form>
+        </p:dialog>          
+    </ui:define>
+    
+</ui:composition>

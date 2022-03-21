@@ -1,0 +1,181 @@
+<?xml version='1.0' encoding='UTF-8' ?> 
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <h:head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <h:outputStylesheet library="css" name="bootstrap.min.css"/>
+        <h:outputScript library="js" name="bootstrap.bundle.min.js"/>
+        <h:outputStylesheet name="./css/default.css"/>
+        <h:outputStylesheet name="./css/cssLayout.css"/>
+        <h:outputStylesheet name="primeicons/primeicons.css" library="primefaces" />
+        <link href="resources/css/estilomenu.css" rel="stylesheet" />
+        <title>
+            <ui:insert name="title">Titulo</ui:insert>
+        </title>
+    </h:head>
+
+    <h:body>
+        <h:form id="frmMenu">
+            
+            <div id="top">
+                <ui:insert name="top">
+                    <!--NAVBAR-->
+                    <h:panelGroup id="Navbar" class="navbar navbar-expand-lg navbar-light bg-light">
+                        <h:panelGroup class="container-fluid">
+                            <h:panelGroup class="me-auto">
+                                <h:graphicImage style="height: 4rem" library="img" name="logoGRupo.jpg"/>
+                                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                                    <span class="navbar-toggler-icon"></span>
+                                </button>
+                            </h:panelGroup>
+
+                            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                                <h:panelGroup class="navbar-nav me-auto mb-2 mb-lg-0">
+                                    <h:panelGroup class="nav-item">
+                                        <h:link class="nav-link text-center" outcome="/Menu" value="INICIO"/>
+                                    </h:panelGroup>
+                                    <h:panelGroup class="nav-item">
+                                        <h:link class="nav-link text-center" outcome="/Videojuegos" value="VIDEOJUEGOS"/>
+                                    </h:panelGroup>
+                                    <!--<h:panelGroup class="nav-item">
+                                        <h:link class="nav-link text-center" outcome="/Accesorios" value="ACCESORIOS"/>
+                                    </h:panelGroup>-->
+                                    
+                                    <div class="nav-item dropdown">
+                                        <a class="nav-link dropdown-toggle text-center" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                        ACCESORIOS
+                                        </a>
+                                        <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                            <li>
+                                                <h:link class="dropdown-item text-center" outcome="/Accesorios" value="TODOS"/>
+                                            </li>
+                                            <li>
+                                                <h:link class="dropdown-item text-center" outcome="/Silla_Gamer" value="SILLA GAMER"/>
+                                            </li>
+                                            <li>
+                                                <h:link class="dropdown-item text-center" outcome="/Raton" value="RATON"/>
+                                            </li>
+                                            <li>
+                                                <h:link class="dropdown-item text-center" outcome="/Teclado" value="TECLADO"/>
+                                            </li>
+                                            <li>
+                                                <h:link class="dropdown-item text-center" outcome="/Audifonos" value="AUDIFONOS"/>
+                                            </li>
+                                            <li>
+                                                <h:link class="dropdown-item text-center" outcome="/Microfonos" value="MICROFONOS"/>
+                                            </li>
+                                            <li>
+                                                <h:link class="dropdown-item text-center" outcome="/Mandos" value="MANDOS"/>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    
+                                    <h:panelGroup class="nav-item">
+                                        <h:link class="nav-link text-center" outcome="/Consolas" value="CONSOLAS"/>
+                                    </h:panelGroup>
+                                    <!--<h:panelGroup class="nav-item">
+                                        <h:link class="nav-link text-center" outcome="/Carrito" value="CARRITO"/>
+                                    </h:panelGroup>-->
+                                </h:panelGroup>
+                            </div>
+                            
+                            <h:panelGroup class="d-flex w-50">
+                                <h:panelGroup class="d-none d-md-flex">
+                                    <p:inputText class="form-control me-2" type="search" placeholder="BUSCAR"/>
+                                    <h:commandButton class="btn btn-outline-success" value="BUSCAR"/>
+                                </h:panelGroup>
+                                <h:panelGroup class="d-flex ms-auto">
+                                    <h:panelGroup class="#{mbInicioSesion.sesionNoIniciada()}">
+                                        <h:commandButton class="btn btn-outline-primary mx-2" id="btnAcceder" 
+                                                         action="Usuario" value="ACCEDER"/>
+                                        <h:commandButton class="btn btn-outline-warning mx-2" id="btnRegistrarse" 
+                                                         action="NuevoUsuario" value="REGISTRARSE"/>
+                                    </h:panelGroup>
+                                    
+                                    <h:panelGroup class="#{mbInicioSesion.sesionIniciada()}">
+                                        <h:graphicImage class="mx-2" style="height: 4rem" library="icons" name="user-circle-solid-240.png"/>
+                                        <h:panelGroup class="d-block me-2">
+                                            <h:outputText class="d-block mb-1" value="#{mbInicioSesion.usuario.nickname}"/>
+                                            <p:commandButton class="btn btn-outline-warning d-block" icon="pi pi-shopping-cart" value="Mi Carrito" action="/Carrito"/>
+                                        </h:panelGroup>
+                                        <p:commandButton class="btn btn-outline-danger d-block" icon="pi pi-sign-out" action="#{mbInicioSesion.cerrarSesion()}" update=":frmMenu"/>
+                                    </h:panelGroup>
+                                    
+                                </h:panelGroup>
+                            </h:panelGroup>
+                        </h:panelGroup>
+                    </h:panelGroup>
+                </ui:insert>
+            </div>
+            <div class="d-flex my-3">
+                <div id="left" class="d-none d-lg-block bg-light">
+                    <ui:insert name="left">
+                    </ui:insert>
+                </div>
+                <div id="content" class="container-fluid">
+                    <ui:insert name="content">
+                        Content
+                    </ui:insert>
+                </div>
+            </div>
+            <div id="bottom">
+                <ui:insert name="bottom">
+                    <!--FOOTER-->
+                    <h:panelGroup class="d-block bg-dark p-3">
+                        <h:panelGroup class="container-fluid row row-cols-2 row-cols-md-4">
+                            <h:panelGroup class="col my-3 m-md-0">
+                                <h:graphicImage class="d-block" style="height: 7rem" library="img" name="logoGRupo.jpg"/>
+                                <h:outputText class="d-block text-white mt-2" value="&copy; 2022–2023"/>
+                            </h:panelGroup>
+                            <h:panelGrid class="col my-3 m-md-0" columns="1">
+                                <h:outputText class="text-white fw-bold" value="Acerca"/>
+                                <h:link class="text-decoration-none text-white" value="Mi cuenta"/>
+                                <h:link class="text-decoration-none text-white" outcome="/Carrito" value="Verificar pedido"/>
+                                <h:link class="text-decoration-none text-white" outcome="/Politica" value="Política de privacidad"/>
+                                <h:link class="text-decoration-none text-white" outcome="/Terminos" value="Términos y condiciones"/>
+                                
+                            </h:panelGrid>
+                           
+                            
+                        </h:panelGroup>
+                    </h:panelGroup>
+                </ui:insert>
+            </div>            
+        </h:form>
+        
+        <ui:insert name="dlg">
+            <p:dialog id="dlgProducto" widgetVar="dlgProducto" header="Agregar al Carrito" 
+                      showEffect="explode"  hideEffect="explode" minWidth="200" resizable="false"
+                      modal="true">
+                <h:form id="frmPP">
+                    <h:graphicImage class="d-block mx-auto" style="height: 12em" library="img" name="#{mbCarrito.obj_Carrito.producto.imagen}"/>
+                    <p:panelGrid columns="2">
+                        <h:outputText value="Nombre:"/>
+                        <h:outputText value="#{mbCarrito.obj_Carrito.producto.nombre}"/>
+                        <h:outputText value="Descripción:"/>
+                        <h:outputText value="#{mbCarrito.obj_Carrito.producto.descripcion}"/>
+                        <h:outputText value="Precio:"/>
+                        <h:outputText value="$#{mbCarrito.obj_Carrito.producto.precio}"/>
+                        <h:outputText value="Cantidad:"/>
+                        <h:inputText value="#{mbCarrito.obj_Carrito.cantidad}">
+                            <f:convertNumber integerOnly="true"/>
+                            <f:validateLongRange minimum="1"/>
+                        </h:inputText>
+                    </p:panelGrid>
+                    <h:outputText class="d-block w-100" value="Desea agregar el producto a su carrito?"/>
+                    <h:panelGrid columns="2">
+                        <p:commandButton value="Si" actionListener="#{mbCarrito.agregarCarritoSesion()}" 
+                                         oncomplete="PF('dlgProducto').hide()"/>
+                        <p:commandButton value="No" oncomplete="PF('dlgProducto').hide()"/>
+                    </h:panelGrid>
+                </h:form>
+            </p:dialog>
+        </ui:insert>
+    </h:body>
+
+</html>

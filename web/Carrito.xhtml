@@ -1,0 +1,80 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <h:head>
+        <h:outputStylesheet library="css" name="bootstrap.min.css"/>
+        <h:outputScript library="js" name="bootstrap.min.js"/>
+        <link href="resources/css/estilomenu.css" rel="stylesheet" />
+        <title>Carrito</title>
+        <f:event type="preRenderView" listener="#{mbInicioSesion.verificarSesion()}"/>
+    </h:head>
+    <h:body>
+        <h:form id="frmConsultar">
+            
+            <h:commandButton class="btn btn-outline-primary d-block" value="Volver al Menu" action="Menu"/>
+            
+            <h:outputLabel class="d-block" value="Contenido Carrito"/>
+            <p:dataTable id="dtConsulta" value="#{mbCarrito.lstCarritoUsuario}" var="car">
+                <p:column headerText="Imagen">
+                    <h:graphicImage class="d-block mx-auto" style="height: 9em" library="img" 
+                                    name="#{car.producto.imagen}"/>
+                </p:column>
+ 
+                <p:column headerText="ID">
+                    <h:outputText value="#{car.idCarrito}"/>
+                </p:column>
+                
+                <p:column headerText="Nombre Producto">
+                    <h:outputText value="#{car.producto.nombre} "/>
+                </p:column>
+                 <p:column headerText="Descripcion Producto">
+                    <h:outputText value="#{car.producto.descripcion}"/>
+                </p:column>
+                
+                <p:column headerText="Precio">
+                    <h:outputText value="$#{car.producto.precio}"/>     
+                </p:column> 
+                 <p:column headerText="Cantidad">
+                    <h:outputText value="#{car.cantidad}"/>     
+                </p:column>
+                <p:column headerText="Total a pagar">
+                    <h:outputText value="$#{car.producto.precio * car.cantidad}"/>
+                </p:column>
+                
+                <p:column headerText="..">
+                    <p:growl id="growl_e" showDetail="true"/>
+                    <p:commandButton  value="Eliminar"
+                                      oncomplete="PF('dlgEliminar').show()"
+                                      update=":frmEliminar :frmConsultar">
+                        <f:setPropertyActionListener target="#{mbCarrito.obj_Carrito}" value="#{car}"/>     
+                    </p:commandButton>
+                </p:column>
+            </p:dataTable>
+
+            <h:link class="btn btn-outline-primary d-block" outcome="/Envio" value="[COMPRAR]"/>
+        </h:form>
+        
+        
+        <p:dialog id="dlgEliminar" minWidth="200" widgetVar="dlgEliminar" 
+                  resizable="false" modal="true" header="Eliminar Producto del Carrito" 
+                  showEffect="explode" hideEffect="explode">
+            <h:form id="frmEliminar">
+                <h:panelGrid columns="1">
+                    <p:outputLabel value="Usuario: #{mbCarrito.obj_Carrito.usuario.nickname}"/>
+                    <p:outputLabel value="Producto: #{mbCarrito.obj_Carrito.producto.nombre}"/>
+                    <p:outputLabel value="Desea eliminar el registro: #{mbCarrito.obj_Carrito.idCarrito}?"/>
+                    <h:panelGrid columns="2">
+                        <p:commandButton icon="ui-icon-check" value="SI" actionListener="#{mbCarrito.eliminarCarrito()}" 
+                                 update=":frmConsultar" oncomplete="PF('dlgEliminar').hide()"/>
+                         <p:commandButton icon="ui-icon-close" value="NO" oncomplete="PF('dlgEliminar').hide()"/>
+                    </h:panelGrid>
+                </h:panelGrid>
+            </h:form>
+           
+        </p:dialog>             
+    </h:body>
+</html>
+

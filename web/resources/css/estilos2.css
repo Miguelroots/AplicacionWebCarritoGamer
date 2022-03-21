@@ -1,0 +1,72 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : 26 feb. 2022, 1:28:13
+    Author     : DELL
+*/
+
+body{
+    margin: 0;
+    padding: 0;
+    background: url(../../img/fondo7.png) no-repeat center top;
+    background-size: cover;
+    
+}
+.registrar-box{
+    width: 320px;
+    height: 700px;
+    background: #000;
+    top: 50%;
+    left: 50%;
+    position: absolute;
+    color: #ffffff;
+    transform: translate(-50%,-50%);
+    box-sizing: border-box;
+    padding: 70px 30px;
+}
+.registrar-box h1{
+    margin: 0;
+    padding: 0 0 20px;
+    text-align: center;
+    font-size: 22px;
+}
+
+
+.registrar-box input{
+    width: 240px;
+    margin-bottom: 20px;
+    
+}
+
+.registrar-box .text{
+    border: none;
+    border-bottom: 1px solid #ffffff;
+    background: transparent;
+    outline: none;
+    color: #ffffff;
+    
+    
+}
+
+.registrar-box .menu{
+    width: 240px;
+    
+}
+
+
+
+
+
+.registrar-box .boton{
+    width: 250px;
+    border:  none;
+    outline: none;
+    height: 40px;
+    background: #ffffff;
+    border-radius: 10px; 
+    
+}
+

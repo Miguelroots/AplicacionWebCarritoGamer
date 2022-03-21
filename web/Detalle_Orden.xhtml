@@ -1,0 +1,243 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                template="./templates/MantenedorTemplate.xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:define name="title">
+        REGISTRO DE ORDENES
+    </ui:define>
+
+    <ui:define name="tituloRegistro">
+        Registro de Ordenes
+    </ui:define>
+
+    <ui:define name="registro">
+<!--        <p:panelGrid id="pgInsertar" columns="3">
+            <p:outputLabel value="Id" />
+            <p:inputText id="txt_id" value="#{mbDetalleOrden.obj_DetalleOrden.idDetalleOrden}" required="true"/>
+            <p:message for="txt_id"/>
+
+            <p:outputLabel value="Orden" />
+            <h:panelGrid columns="2">
+                <p:inputText id="txt_Orden" value="#{mbDetalleOrden.obj_DetalleOrden.orden}" 
+                             disabled="true" required="true"/>
+                <p:commandButton  value="Seleccionar..." oncomplete="PF('dlgSelectOrden').show()"/>
+            </h:panelGrid>
+            <p:message for="txt_Orden"/>
+
+            <p:outputLabel value="Producto" />
+            <h:panelGrid columns="2">
+                <p:inputText id="txt_Producto" value="#{mbDetalleOrden.obj_DetalleOrden.producto}" disabled="true" required="true"/>
+                <p:commandButton  value="Seleccionar..." oncomplete="PF('dlgSelectProducto').show()"/>
+            </h:panelGrid>
+            <p:message for="txt_Producto"/>
+
+            <p:outputLabel value="Cantidad" />
+            <p:inputText id="txt_Cantidad" value="#{mbDetalleOrden.obj_DetalleOrden.cantidad}" required="true">
+                <f:validateLongRange minimum="1" maximum="100"/>
+                <f:convertNumber minIntegerDigits="1" maxIntegerDigits="3"/>
+            </p:inputText>
+            <p:message for="txt_Cantidad"/>
+
+            <p:outputLabel value="Precio" />
+            <p:inputText id="txt_Precio" value="#{mbDetalleOrden.obj_DetalleOrden.precio}" required="true">
+                <f:validateDoubleRange/>
+                <f:convertNumber maxFractionDigits="2" minFractionDigits="1"/>
+            </p:inputText>
+            <p:message for="txt_Precio"/>
+
+            <p:commandButton icon="ui-icon-plusthick" value="Ingresar" 
+                             actionListener="#{mbDetalleOrden.agregarDetalleOrden()}" 
+                             update=":frmRegistro :frmConsultar"/>
+
+        </p:panelGrid>-->
+    </ui:define>
+
+    <ui:define name="tabla">
+        <p:dataTable id="dtConsulta" value="#{mbDetalleOrden.lstDetalleOrden}" var="do" rows="5" 
+                     filteredValue="#{mbDetalleOrden.lstDetalleOrdenesFiltradas}" paginator="true" widgetVar="dtConsultar"
+                     paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                     currentPageReportTemplate="{startRecord}-{endRecord} de {totalRecords} registros"
+                     rowsPerPageTemplate="5,10,{ShowAll|'All'}">
+            <f:facet name="paginatorTopLeft">
+                <p:inputText id="globalFilter" placeholder="Buscar..."/>
+                <p:commandButton class="btn-success" onclick="PF('dtConsultar').filter()" value="Buscar"/>
+            </f:facet>
+            
+            <p:column headerText="ID" sortBy="#{do.idDetalleOrden}" filterBy="#{do.idDetalleOrden}" 
+                      filterMatchMode="exact">
+                <h:outputText value="#{do.idDetalleOrden}"/>
+            </p:column>
+            
+            <p:column headerText="Orden" sortBy="#{do.orden.usuario.nickname}" filterBy="#{do.orden.usuario.nickname}"
+                      filterMatchMode="contains">
+                <h:outputText value="#{do.orden.idOrden}-#{do.orden.usuario.nickname}-#{do.orden.envio.direccion}"/>
+            </p:column>
+            
+            <p:column headerText="Producto" sortBy="#{do.producto.nombre}" filterBy="#{do.producto.nombre}" 
+                      filterMatchMode="contains">
+                <h:outputText value="#{do.producto.idProducto}-#{do.producto.nombre}-
+                              #{do.producto.categoriaProducto.descripcion}"/>
+            </p:column>
+            <p:column headerText="Cantidad" sortBy="#{do.cantidad}" filterBy="#{do.cantidad}" filterMatchMode="exact">
+                <h:outputText value="#{do.cantidad}"/>
+            </p:column>
+            
+            <p:column headerText="Precio" sortBy="#{do.precio}" filterBy="#{do.precio}"
+                      filterMatchMode="contains">
+                <h:outputText value="$#{do.precio}"/>
+            </p:column>
+            
+            <p:column headerText="...">
+                <p:growl id="growl_m" showDetail="true"/>
+                <p:commandButton  value="Modificar"
+                                  oncomplete="PF('dlgModificar').show()"
+                                  update="frmModificar">
+                    <f:setPropertyActionListener target="#{mbDetalleOrden.obj_DetalleOrden}" value="#{do}"/>
+                </p:commandButton>
+            </p:column>
+            
+            <p:column headerText="..">
+                <p:growl id="growl_e" showDetail="true"/>
+                <p:commandButton  value="Eliminar"
+                                  oncomplete="PF('dlgEliminar').show()"
+                                  update=":frmEliminar">
+                     <f:setPropertyActionListener target="#{mbDetalleOrden.obj_DetalleOrden}" value="#{do}"/>     
+                </p:commandButton>
+            </p:column>
+
+        </p:dataTable>
+    </ui:define>
+
+    <ui:define name="dlg">
+        <p:dialog id="dlgModificar" widgetVar="dlgModificar" 
+                  header="Modificar Usuario" showEffect="explode"  hideEffect="explode" minWidth="200" resizable="false"
+                  modal="true">
+            <h:form id="frmModificar">
+                <p:panelGrid id="pgModificar" columns="3">
+                    <p:outputLabel value="Id" />
+                    <p:inputText id="txt_id" value="#{mbDetalleOrden.obj_DetalleOrden.idDetalleOrden}" required="true"/>
+                    <p:message for="txt_id"/>
+
+                    <p:outputLabel value="Usuario"/>
+                    <p:inputText id="txt_Usuario" value="#{mbDetalleOrden.obj_DetalleOrden.orden.usuario.nickname}" required="true"/>
+                    <p:message for="txt_Usuario"/>
+
+                    <p:outputLabel value="Pais"/>
+                    <p:selectOneMenu id="cboPais" value="#{mbDetalleOrden.obj_DetalleOrden.orden.envio.pais}" required="true">
+                        <f:selectItem itemLabel="Ecuador" itemValue="ecuador"/>
+                        <f:selectItem itemLabel="Colombia" itemValue="colombia"/>
+                        <f:selectItem itemLabel="Brasil" itemValue="brasil"/>
+                    </p:selectOneMenu>
+                    <p:message for="cboPais"/>
+                    
+                    <p:outputLabel value="Ciudad"/>
+                    <p:selectOneMenu id="cboCiudad" value="#{mbDetalleOrden.obj_DetalleOrden.orden.envio.ciudad}" required="true">
+                        <f:selectItem itemLabel="Guayaquil" itemValue="guayaquil"/>
+                        <f:selectItem itemLabel="Quito" itemValue="quito"/>
+                        <f:selectItem itemLabel="Armenia" itemValue="armenia"/>
+                        <f:selectItem itemLabel="Barranquilla" itemValue="barranquilla"/>
+                        <f:selectItem itemLabel="Sao Paulo" itemValue="sao paulo"/>
+                        <f:selectItem itemLabel="Manaos" itemValue="manaos"/>
+                    </p:selectOneMenu>
+                    <p:message for="cboCiudad"/>
+                    
+                    <p:outputLabel value="Producto"/>
+                    <p:inputText id="txt_Producto" value="#{mbDetalleOrden.obj_DetalleOrden.producto.nombre}" required="true"/>
+                    <p:message for="txt_Producto"/>
+                    
+                    <p:outputLabel value="Precio"/>
+                    <p:inputText id="txt_Precio" value="#{mbDetalleOrden.obj_DetalleOrden.precio}" required="true"/>
+                    <p:message for="txt_Precio"/>
+                           
+                    <p:commandButton icon="ui-icon-refresh" value="Modificar" 
+                                     actionListener="#{mbDetalleOrden.modificarDetalleOrden()}"
+                                     update=":frmConsultar" 
+                                     oncomplete="PF('dlgModificar').hide() "/>
+                </p:panelGrid>  
+            </h:form>
+        </p:dialog>
+        
+        <p:dialog id="dlgEliminar" widgetVar="dlgEliminar" header="Eliminar Usuario"
+                  showEffect="explode" hideEffect="explode"
+                  modal="true" minWidth="200" resizable="false">
+            <h:form id="frmEliminar">         
+                <p:outputLabel value="Desea eliminar el Detalle de Orden con Id: #{mbDetalleOrden.obj_DetalleOrden.idDetalleOrden} "/>
+                <p:commandButton icon="ui-icon-check" value="SI"
+                                 actionListener="#{mbDetalleOrden.eliminarDetalleOrden()}"
+                                 update=":frmConsultar" 
+                                 oncomplete="PF('dlgEliminar').hide()"/>
+                <p:commandButton icon="ui-icon-close" value="NO"
+                                 onclick="PF('dlgEliminar').hide()"/>                
+            </h:form>
+           
+        </p:dialog>    
+        
+        <p:dialog id="dlgSelectProducto" widgetVar="dlgSelectProducto" 
+                  header="Seleccionar Producto" showEffect="explode"  hideEffect="explode" minWidth="200" resizable="false"
+                  modal="true">
+            <h:form id="frmSelectProducto">
+                <p:dataTable value="#{mbProducto.lstProducto}" var="pro" scrollable="true" scrollHeight="500">
+                    <p:column headerText="ID">
+                        <h:outputText value="#{pro.idProducto}"/>
+                    </p:column>
+                    <p:column headerText="Categoria">
+                        <h:outputText value="#{pro.categoriaProducto.descripcion}"/>
+                    </p:column>
+                    <p:column headerText="Nombre">
+                        <h:outputText value="#{pro.nombre}"/>
+                    </p:column>
+                    <p:column headerText="Precio">
+                        <h:outputText value="$#{pro.precio}"/>
+                    </p:column>
+                    <p:column headerText="Descripcion">
+                        <h:outputText value="#{pro.descripcion}"/>
+                    </p:column>
+                    <p:column headerText="">
+                        <p:commandButton  value="Seleccionar"
+                                          oncomplete="PF('dlgSelectProducto').hide()"
+                                          update=":frmRegistro">
+                            <f:setPropertyActionListener target="#{mbDetalleOrden.obj_DetalleOrden.producto}" value="#{pro}"/>
+                        </p:commandButton>
+                    </p:column>
+                </p:dataTable>
+            </h:form>
+        </p:dialog>
+        
+        <p:dialog id="dlgSelectOrden" widgetVar="dlgSelectOrden" 
+                  header="Seleccionar Orden" showEffect="explode"  hideEffect="explode" minWidth="200" resizable="false"
+                  modal="true">
+            <h:form id="frmSelectOrden">
+                <p:dataTable value="#{mbOrden.lstOrden}" var="ord" scrollable="true" scrollHeight="500">
+                    <p:column headerText="ID">
+                        <h:outputText value="#{ord.idOrden}"/>
+                    </p:column>
+                    <p:column headerText="Ciudad-País">
+                        <h:outputText value="#{ord.envio.ciudad}-#{ord.envio.pais}"/>
+                    </p:column>
+                    <p:column headerText="Metodo de Pago">
+                        <h:outputText value="#{ord.metodoPago.descripcion}"/>
+                    </p:column>
+                    <p:column headerText="Usuario">
+                        <h:outputText value="#{ord.usuario.nickname}"/>
+                    </p:column>
+                    <p:column headerText="Total">
+                        <h:outputText value="$#{ord.total}"/>
+                    </p:column>
+                    
+                    <p:column headerText="">
+                        <p:commandButton  value="Seleccionar"
+                                          oncomplete="PF('dlgSelectOrden').hide()"
+                                          update=":frmRegistro">
+                            <f:setPropertyActionListener target="#{mbDetalleOrden.obj_DetalleOrden.orden}" value="#{ord}"/>
+                        </p:commandButton>
+                    </p:column>
+                </p:dataTable>
+            </h:form>
+        </p:dialog>
+    </ui:define>
+
+</ui:composition>

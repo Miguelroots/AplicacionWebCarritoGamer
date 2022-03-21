@@ -1,0 +1,182 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                template="./templates/MantenedorTemplate.xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:define name="title">
+        REGISTRO DE PRODUCTOS
+    </ui:define>
+
+    <ui:define name="tituloRegistro">
+        Registro de Productos
+    </ui:define>
+
+    <ui:define name="registro">
+         
+        <p:panelGrid id="pgInsertar" columns="3">
+            <p:outputLabel value="Id_Producto:" />
+            <p:inputText class="form-control" id="txtIDVidejuegos" value="#{mbProducto.obj_Producto.idProducto}" required="true"/>
+            <p:message for="txtIDVidejuegos"/>
+
+            <p:outputLabel value="Titulo:"/>
+            <p:inputText class="form-control" id="txtTitulo" value="#{mbProducto.obj_Producto.nombre}" required="true" />
+            <p:message for="txtTitulo"/>
+
+            <p:outputLabel value="Precio:"/>
+            <p:inputText class="form-control" id="txtPrecio" value="#{mbProducto.obj_Producto.precio}" required="true">
+                
+            </p:inputText>
+            <p:message for="txtPrecio"/>
+
+            <h:outputLabel value="Descripcion:"/>
+            <h:inputTextarea class="form-control" id="txaDescripcion" value="#{mbProducto.obj_Producto.descripcion}" required="true"/>
+            <p:message for="txaDescripcion"/>
+
+            <p:outputLabel value="Categoria:"/>
+            <p:selectOneMenu class="form-select w-100" id="cboCategoria" value="#{mbProducto.obj_Producto.categoriaProducto.idCategoriaProducto}"  required="true">
+                <f:selectItem itemLabel="--Seleccionar"/>
+                <f:selectItems value="#{mbCatProducto.lstCategoriaProductos}" var="cat"
+                               itemLabel="#{cat.descripcion}" itemValue="#{cat.idCategoriaProducto}"/>
+            </p:selectOneMenu>
+            <p:message for="cboCategoria"/>
+            
+            <p:outputLabel value="Imagen"/>
+            <p:inputText id="txtImgProducto" value="#{mbProducto.obj_Producto.imagen}"/>
+            
+            <p:message for="txtImgProducto"/>
+
+            <p:commandButton icon="ui-icon-plusthick" value="Ingresar" 
+                             actionListener="#{mbProducto.agregarProducto()}" 
+                             update=":frmRegistro :frmConsultar"/>                
+        </p:panelGrid>
+    </ui:define>
+
+    <ui:define name="tabla">
+        <p:dataTable id="dtConsulta" value="#{mbProducto.lstProducto}" var="p" rows="5" 
+                     filteredValue="#{mbProducto.lstProductosFiltrada}" paginator="true" widgetVar="dtConsultar"
+                     paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                     currentPageReportTemplate="{startRecord}-{endRecord} de {totalRecords} registros"
+                     rowsPerPageTemplate="5,10,{ShowAll|'All'}">
+<!--            
+            
+            <f:facet name="paginatorTopLeft">
+                <p:inputText id="globalFilter" placeholder="Buscar..."/>
+                <p:commandButton class="btn-success" onclick="PF('dtConsultar').filter()" value="Buscar"/>
+            </f:facet>-->
+            
+                        
+            <f:facet name="header">
+                <p:outputPanel>
+                     <h:outputText value="Buscar:"/>
+                <p:inputText id="globalFilter" onkeyup="PF('dtConsultar').filter()" placeholder="Buscar"/>       
+                </p:outputPanel>   
+            </f:facet>
+            
+            
+            <p:column headerText="ID" sortBy="#{p.idProducto}" filterBy="#{p.idProducto}" filterMatchMode="exact">
+                <h:outputText value="#{p.idProducto}"/>
+            </p:column>
+            
+            <p:column headerText="Nombre" sortBy="#{p.nombre}" filterBy="#{p.nombre}" filterMatchMode="contains">
+                <h:outputText value="#{p.nombre}"/>
+            </p:column>
+            
+            <p:column headerText="Precio" sortBy="#{p.precio}" filterBy="#{p.precio}" filterMatchMode="contains">
+                <h:outputText value="$#{p.precio}"/>
+            </p:column>
+            
+            <p:column headerText="Categoria del producto" sortBy="#{p.categoriaProducto.descripcion}"
+                      filterBy="#{p.categoriaProducto.descripcion}" filterMatchMode="exact">
+                <f:facet name="filter">
+                    <p:selectOneMenu onchange="PF('dtConsultar').filter()">
+                        <f:selectItem itemLabel="Todos"/>
+                        <f:selectItems value="#{mbCatProducto.lstCategoriaProductos}" var="ct"
+                                       itemLabel="#{ct.descripcion}" itemValue="#{ct.descripcion}"/>
+                    </p:selectOneMenu>
+                </f:facet>
+                
+                <h:outputText value="#{p.categoriaProducto.descripcion}"/>
+            </p:column>
+            
+            <p:column headerText="Descripcion" sortBy="#{p.descripcion}" filterBy="#{p.descripcion}" filterMatchMode="contains"> 
+                <h:outputText value="#{p.descripcion}"/>
+            </p:column>
+            
+            <p:column headerText="Imagen" sortBy="#{p.imagen}" filterBy="#{p.imagen}" filterMatchMode="contains">
+                <h:graphicImage class="d-block mx-auto" style="width: 8rem" library="img" name="#{p.imagen}"/>
+                <h:outputText class="d-block text-center" value="#{p.imagen}"/>
+            </p:column>
+            
+            <p:column headerText="Modificar">
+                <p:growl id="growl_m" showDetail="true"/>
+                <p:commandButton  value="Modificar" oncomplete="PF('dlgModificar').show()" update=":frmModificar :frmConsultar">
+                    <f:setPropertyActionListener target="#{mbProducto.obj_Producto}" value="#{p}"/>
+                </p:commandButton>
+            </p:column>
+            <p:column headerText="Eliminar">
+                <p:commandButton  value="Eliminar" oncomplete="PF('dlgEliminar').show()" update=":frmEliminar :frmConsultar">
+                    <f:setPropertyActionListener target="#{mbProducto.obj_Producto}" value="#{p}"/>
+                </p:commandButton>
+            </p:column>
+        </p:dataTable>
+    </ui:define>
+
+    <ui:define name="dlg">
+        <p:dialog id="dlgModificar" minWidth="200" widgetVar="dlgModificar" 
+              resizable="false" modal="true" header="Modificar Producto" 
+              showEffect="explode" hideEffect="explode">
+            <h:form id="frmModificar">
+                <p:growl id="growl_m" showDetail="true"/>
+                <p:panelGrid id="pgModificar" columns="3">
+                <p:outputLabel value="Id" />
+                <p:inputText id="txtId" value="#{mbProducto.obj_Producto.idProducto}"/>
+                <p:message for="txtId"/>
+                
+                <p:outputLabel value="Nombre"/>
+                <p:inputText id="txtNombres" value="#{mbProducto.obj_Producto.nombre}"/>
+                <p:message for="txtNombres"/>
+                
+                <p:outputLabel value="Precio"/>
+                <p:inputText id="txtPrecio" value="#{mbProducto.obj_Producto.precio}"/>
+                <p:message for="txtPrecio"/>
+                
+                <p:outputLabel value="Categoria"/>
+                <p:selectOneMenu class="form-select w-100" id="cboCategoria" value="#{mbProducto.obj_Producto.categoriaProducto.idCategoriaProducto}"  required="true">
+                    <f:selectItem itemLabel="--Seleccionar"/>
+                    <f:selectItems value="#{mbCatProducto.lstCategoriaProductos}" var="cat"
+                                   itemLabel="#{cat.descripcion}" itemValue="#{cat.idCategoriaProducto}"/>
+                </p:selectOneMenu>
+                <p:message for="cboCategoria"/>
+                
+                <p:outputLabel value="Descripcion"/>
+                <p:inputTextarea id="txtDescripcion" value="#{mbProducto.obj_Producto.descripcion}"/>
+                <p:message for="txtDescripcion"/>
+                
+                <p:outputLabel value="Imagen"/>
+                <p:inputText id="imgProducto" value="#{mbProducto.obj_Producto.imagen}"/>
+                <p:message for="imgProducto"/>
+                
+                <p:commandButton icon="ui-icon-refresh" value="Modificar" 
+                                 actionListener="#{mbProducto.modificarProducto()}" 
+                                 update=":frmConsultar" oncomplete="PF('dlgModificar').hide()"/>
+            </p:panelGrid>
+            </h:form>            
+        </p:dialog>
+        
+        <p:dialog id="dlgEliminar" minWidth="200" widgetVar="dlgEliminar" 
+                  resizable="false" modal="true" header="Eliminar Producto" 
+                  showEffect="explode" hideEffect="explode">
+            <h:form id="frmEliminar">
+                <p:growl id="growl_e" showDetail="true"/>
+                <p:outputLabel value="Desea eliminar el registro: #{mbProducto.obj_Producto.idProducto}?"/>
+                <p:commandButton icon="ui-icon-check" value="SI" actionListener="#{mbProducto.eliminarProducto()}" 
+                                 update=":frmConsultar" oncomplete="PF('dlgEliminar').hide()"/>
+                <p:commandButton icon="ui-icon-close" value="NO" oncomplete="PF('dlgEliminar').hide()"/>
+            </h:form>
+        </p:dialog>   
+    </ui:define>
+
+</ui:composition>
